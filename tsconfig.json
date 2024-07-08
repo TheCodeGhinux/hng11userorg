@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6",],
+    "target": "ES2022",
+    "strict": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    // "typeRoots": ["node_modules/@types"],
+    // "types": ["node", "express", "body-parser"]
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": ["src/**/*.ts", "src/types/auth.d.ts"]
+}
