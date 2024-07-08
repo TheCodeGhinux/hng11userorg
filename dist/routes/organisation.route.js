@@ -15,5 +15,5 @@ router.post('/organisations', authGuard_1.authGuard, organisation_controller_1.c
 // router.get('/user', getAllUsers)
 // router.post('/api/organisations/addUser', authGuard, addUserToOrganisation)
 router.post('/api/organisations/removeUser', authGuard_1.authGuard, organisation_controller_1.removeUserFromOrganisation);
-module.exports = router;
+exports.default = router;
 //# sourceMappingURL=organisation.route.js.map

@@ -18,5 +18,5 @@ router.get('/profile', auth_1.authenticate, (req, res) => {
     console.log(user);
     res.json({ user: req.user });
 });
-module.exports = router;
+exports.default = router;
 //# sourceMappingURL=user.route.js.map

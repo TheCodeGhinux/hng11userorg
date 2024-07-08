@@ -1,3 +1,4 @@
+import { Organisation } from './enitity/organisation.entity'
 import express from 'express'
 import { readdirSync } from 'fs'
 // import { sayHelloController } from "./controllers/index";
@@ -11,6 +12,10 @@ import cron from 'node-cron'
 import { Server, createServer } from 'http'
 import cookieParser from 'cookie-parser'
 import { AppDataSource } from './app-data-source'
+
+// Import routes
+import userRoutes from './routes/user.route'
+import organisationRoutes from './routes/organisation.route'
 
 // const swaggerUi = require("swagger-ui-express");
 // const swaggerOptions = require("./swagger");
@@ -44,16 +49,20 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hello HNG 11 ' })
 }) 
 
+// Use imported routes
+app.use('/api', userRoutes)
+app.use('/api', organisationRoutes);
 
 //serve all routes dynamically using readdirsync
-readdirSync('./src/routes').map((path) => {
-  if (!path.includes('auth')) {
-    // app.use("/api/v1/", authenticateJWT, require(`./routes/${path}`));
-    app.use('/api/', require(`./routes/${path}`))
-  } else {
-    app.use('/api/', require(`./routes/${path}`))
-  }
-})
+// readdirSync('./src/routes').map((path) => {
+//   if (!path.includes('auth')) {
+//     // app.use("/api/v1/", authenticateJWT, require(`./routes/${path}`));
+//     app.use('/api/', require(`./routes/${path}`))
+//   } else {
+//     app.use('/api/', require(`./routes/${path}`))
+//   }
+// })
+
 // app.get("/", sayHelloController);
 app.use(errorHandler)
 const port = process.env.PORT || 3000

@@ -11,12 +11,12 @@ import { authGuard } from '../middlewares/authGuard'
 
 const router = Router()
 
-router.get('/organisations', authGuard,  getAllOrganisation)
-router.get('/organisations', authGuard,  getAllOrganisation)
+router.get('/organisations', authGuard, getAllOrganisation)
+router.get('/organisations', authGuard, getAllOrganisation)
 router.get('/organisations/:orgId', authGuard, getUserOrganisation)
 // router.post('/organisations', createOrganisation)
 router.post('/organisations/:orgId/users', authGuard, addUserToOrganisation)
-router.post('/organisations', authGuard,  createOrganisation)
+router.post('/organisations', authGuard, createOrganisation)
 // router.get('/users/:firstName', getUserByFirstName)
 // router.get('/users/:email', getUserByEmail)
 // router.get('/user', getAllUsers)
@@ -27,4 +27,4 @@ router.post(
   authGuard,
   removeUserFromOrganisation
 )
-module.exports = router
+export default router

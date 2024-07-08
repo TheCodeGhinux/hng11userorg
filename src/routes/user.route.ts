@@ -27,4 +27,4 @@ router.get('/profile', authenticate, (req: any, res) => {
   res.json({ user: req.user })
 })
 
-module.exports = router
+export default router
