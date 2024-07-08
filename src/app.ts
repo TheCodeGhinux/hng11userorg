@@ -32,33 +32,18 @@ function keepAlive(url) {
     })
 }
 
-// cron job to ping the server every minute and delete expired tokens every 5 minutes
-// cron.schedule("*/5 * * * *", () => {
-//   keepAlive("//");
-//   deleteExpiredTokens();
-//   console.log("deleting expired tokens every 5 minutes");
-//   console.log("pinging the server every minute");
-// });
-
-// middleware setup
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
-// app.use(
-//   session({
-//     secret: process.env.JWT_SECRET || "secret",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
+
 
 app.use(cookieParser())
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello HNG 11 ' })
+}) 
 
-// app.use(authToken);
 
 //serve all routes dynamically using readdirsync
 readdirSync('./src/routes').map((path) => {
@@ -75,14 +60,6 @@ const port = process.env.PORT || 3000
 
 const httpServer = createServer(app)
 
-// AppDataSource.initialize()
-//   .then(async () => {
-//     app.listen(port, () => {
-//       console.log('Server is running on http://localhost:' + port)
-//     })
-//     console.log('Data Source has been initialized!')
-//   })
-//   .catch((error) => console.log(error))
 
 AppDataSource.initialize()
   .then(() => {
@@ -94,3 +71,6 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error('Error during Data Source initialization:', err)
   })
+
+
+  export default app
