@@ -26,6 +26,8 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.10.6",
     "@types/supertest": "^6.0.2",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.8",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tslib": "^2.6.2",
@@ -53,6 +55,7 @@
     "pg": "^8.12.0",
     "supertest": "^7.0.0",
     "typeorm": "^0.3.20",
+    "vercel": "^34.3.0",
     "zod": "^3.23.8",
     "zod-error": "^1.5.0",
     "zod-validation-error": "^3.3.0"
