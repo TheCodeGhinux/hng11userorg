@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6",],
+    "lib": ["es5", "es6"],
     "target": "ES2022",
     "strict": false,
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./build",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     // "typeRoots": ["node_modules/@types"],
     // "types": ["node", "express", "body-parser"]
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/types/auth.d.ts"]
+  "include": ["src/**/*", "src/types/auth.d.ts"]
 }
