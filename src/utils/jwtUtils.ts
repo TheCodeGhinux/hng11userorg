@@ -2,6 +2,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 import { User } from '../enitity'
 import bcrypt from 'bcrypt'
+import { BadRequestError, UnauthorizedError } from '../middlewares'
 dotenv.config()
 
 // interface TokenPayload extends JwtPayload {
@@ -40,7 +41,7 @@ export const verifyToken = (token: string): TokenPayload => {
     return jwt.verify(token, JWT_SECRET) as TokenPayload
   } catch (err) {
     console.error('Error verifying token:', err)
-    throw new Error('Token verification failed')
+    throw new UnauthorizedError('Token expired, please login again')
   }
 }
 

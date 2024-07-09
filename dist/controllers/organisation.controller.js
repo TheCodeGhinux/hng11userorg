@@ -90,15 +90,20 @@ const getUserOrganisation = async (req, res, next) => {
         // Query the organization by orgId and ensure the logged-in user has access
         const organisation = await organisationRepository
             .createQueryBuilder('organisation')
-            .leftJoinAndSelect('organisation.users', 'user')
-            .leftJoinAndSelect('organisation.createdBy', 'creator')
-            .where('organisation.orgId = :organisationId AND (user.userId = :userId OR creator.userId = :userId)', {
-            organisationId,
-            userId,
-        })
+            .where('organisation.orgId = :organisationId', { organisationId })
             .getOne();
         if (!organisation) {
-            throw new middlewares_1.NotFoundError('Organisation not found or access denied');
+            throw new middlewares_1.NotFoundError('Organisation not found');
+        }
+        const hasAccess = await organisationRepository
+            .createQueryBuilder('organisation')
+            .leftJoin('organisation.users', 'user')
+            .leftJoin('organisation.createdBy', 'creator')
+            .where('organisation.orgId = :organisationId', { organisationId })
+            .andWhere('user.userId = :userId OR creator.userId = :userId', { userId })
+            .getOne();
+        if (!hasAccess) {
+            throw new middlewares_1.ForbiddenError('Access denied');
         }
         const responseData = {
             orgId: organisation.orgId,
