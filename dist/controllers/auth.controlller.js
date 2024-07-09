@@ -68,6 +68,10 @@ const createUser = async (req, res, next) => {
             const validationError = (0, zod_validation_error_1.fromError)(err).toString();
             throw new middlewares_1.UnprocessableEntityError(validationError);
         }
+        const user = await userRepository.findOneBy({ email: email });
+        if (user) {
+            throw new middlewares_1.BadRequestError('User with the email already exists. Please login');
+        }
         const hashedPassword = await bcrypt_1.default.hash(password, 10);
         if (!hashedPassword) {
             throw new middlewares_1.BadRequestError('Invalid password, please provide a valid password');

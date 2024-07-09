@@ -85,6 +85,12 @@ export const createUser = async (
       throw new UnprocessableEntityError(validationError)
     }
 
+      const user = await userRepository.findOneBy({ email: email })
+
+      if (user) {
+        throw new BadRequestError('User with the email already exists. Please login')
+      }
+
     const hashedPassword = await bcrypt.hash(password, 10)
     if (!hashedPassword) {
       throw new BadRequestError(
