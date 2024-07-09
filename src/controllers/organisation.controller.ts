@@ -5,6 +5,7 @@ import { Organisation, User } from '../enitity'
 import { ResponseHandler } from '../utils'
 import {
   BadRequestError,
+  ForbiddenError,
   NotFoundError,
   UnprocessableEntityError,
 } from '../middlewares'
@@ -130,21 +131,24 @@ export const getUserOrganisation = async (
     // Query the organization by orgId and ensure the logged-in user has access
     const organisation = await organisationRepository
       .createQueryBuilder('organisation')
-      .leftJoinAndSelect('organisation.users', 'user')
-      .leftJoinAndSelect('organisation.createdBy', 'creator')
-      .where(
-        'organisation.orgId = :organisationId AND (user.userId = :userId OR creator.userId = :userId)',
-        {
-          organisationId,
-          userId,
-        }
-      )
+      .where('organisation.orgId = :organisationId', { organisationId })
       .getOne()
 
     if (!organisation) {
-      throw new NotFoundError('Organisation not found or access denied')
+      throw new NotFoundError('Organisation not found')
     }
 
+    const hasAccess = await organisationRepository
+      .createQueryBuilder('organisation')
+      .leftJoin('organisation.users', 'user')
+      .leftJoin('organisation.createdBy', 'creator')
+      .where('organisation.orgId = :organisationId', { organisationId })
+      .andWhere('user.userId = :userId OR creator.userId = :userId', { userId })
+      .getOne()
+
+    if (!hasAccess) {
+      throw new ForbiddenError('Access denied')
+    }
     const responseData = {
       orgId: organisation.orgId,
       name: organisation.name,
@@ -194,11 +198,11 @@ export const addUserToOrganisation = async (
     const userRepository = AppDataSource.getRepository(User)
     const organisationRepository = AppDataSource.getRepository(Organisation)
 
-    if(!userId){
+    if (!userId) {
       throw new BadRequestError('No user id provided')
     }
 
-    if(!orgId){
+    if (!orgId) {
       throw new BadRequestError('No user id provided')
     }
 
@@ -212,15 +216,12 @@ export const addUserToOrganisation = async (
 
     const user = await userRepository.findOneBy({ userId: userId })
 
-    if(!user){
+    if (!user) {
       throw new NotFoundError('No user found with the provided ID')
     }
 
     await updateOrganisationUsers(orgId, userId, 'add')
-    const responseData = {
-
-    }
-
+    const responseData = {}
 
     ResponseHandler.success(
       res,

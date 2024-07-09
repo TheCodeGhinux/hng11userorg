@@ -33,10 +33,6 @@ export const authenticate = async (
     }
 
     req.user = user
-    console.log("user in req:", req.user);
-    console.log("user:", user);
-    
-    
     next()
   } catch (error) {
     return res.status(401).json({ message: 'Failed to authenticate token' })

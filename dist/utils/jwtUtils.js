@@ -30,6 +30,7 @@ exports.comparePassword = exports.verifyToken = exports.generateToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = __importStar(require("dotenv"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const middlewares_1 = require("../middlewares");
 dotenv.config();
 // Replace with your secret key
 const JWT_SECRET = process.env.SECRET_KEY;
@@ -51,7 +52,7 @@ const verifyToken = (token) => {
     }
     catch (err) {
         console.error('Error verifying token:', err);
-        throw new Error('Token verification failed');
+        throw new middlewares_1.UnauthorizedError('Token expired, please login again');
     }
 };
 exports.verifyToken = verifyToken;
