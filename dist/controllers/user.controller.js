@@ -56,12 +56,22 @@ const getUserById = async (req, res, next) => {
     const user = req.user;
     console.log(user);
     try {
-        const user = await userService.getUserById(userId);
+        const userRepository = app_data_source_1.AppDataSource.getRepository(enitity_1.User);
+        const organisationRepository = app_data_source_1.AppDataSource.getRepository(enitity_1.Organisation);
+        const user = await userRepository.findOneBy({ userId: userId });
+        console.log(user);
+        const responseData = {
+            userId: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+        };
         if (!user) {
             throw new middlewares_1.BadRequestError(`User with id ${userId} not found`);
         }
         else {
-            utils_1.ResponseHandler.success(res, user, 200, 'User fetched successfully');
+            utils_1.ResponseHandler.success(res, responseData, 200, 'User fetched successfully');
         }
     }
     catch (error) {

@@ -3,14 +3,18 @@ import { Request, Response } from 'express'
 import { AppDataSource } from '../app-data-source'
 import { Organisation, User } from '../enitity'
 import { ResponseHandler } from '../utils'
-import { BadRequestError, NotFoundError, UnprocessableEntityError } from '../middlewares'
+import {
+  BadRequestError,
+  NotFoundError,
+  UnprocessableEntityError,
+} from '../middlewares'
 import { UserService } from '../services/user.service'
 
 const userService = new UserService()
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = AppDataSource.getRepository(User)
     const users = await userRepository.find({
       select: ['userId', 'firstName', 'lastName', 'phone'],
     })
@@ -65,15 +69,32 @@ const getUserById = async (req: any, res: Response, next: NextFunction) => {
   const userId = req.params.id
   const user = req.user
 
-  console.log(user);
-  
+  console.log(user)
+
   try {
-    const user = await userService.getUserById(userId)
+    const userRepository = AppDataSource.getRepository(User)
+    const organisationRepository = AppDataSource.getRepository(Organisation)
+
+    const user = await userRepository.findOneBy({ userId: userId })
+    console.log(user)
+
+    const responseData = {
+      userId: user.userId,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+    }
 
     if (!user) {
       throw new BadRequestError(`User with id ${userId} not found`)
     } else {
-      ResponseHandler.success(res, user, 200, 'User fetched successfully')
+      ResponseHandler.success(
+        res,
+        responseData,
+        200,
+        'User fetched successfully'
+      )
     }
   } catch (error) {
     return next(error)

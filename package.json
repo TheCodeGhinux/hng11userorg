@@ -8,7 +8,7 @@
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
-    "start:dev": "tsc && node dist/app.js",
+    "start:dev": "tsc && nodemon dist/app.js",
     "dev": "nodemon src/app.ts",
     "dev:dist": "nodemon dist/app.js"
   },

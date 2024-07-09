@@ -13,8 +13,8 @@ const router = Router()
 
 
 router.get('/users', getAllUsers)
-router.get('/users/:firstName', getUserByFirstName)
-router.get('/users/:email', getUserByEmail)
+// router.get('/users/:firstName', getUserByFirstName)
+// router.get('/users/:email', getUserByEmail)
 router.get('/users/:id', getUserById)
 router.post('/auth/register', createUser, validateCreateUserData)
 router.post('/auth/login', loginUser, authenticate)
