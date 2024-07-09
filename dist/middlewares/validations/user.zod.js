@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateAwardDataSchema = exports.CreateUserDataSchema = void 0;
+exports.UpdateAwardDataSchema = exports.LoginUserDataSchema = exports.CreateUserDataSchema = void 0;
 exports.validateCreateUserData = validateCreateUserData;
 exports.validateUpdateUserData = validateUpdateUserData;
 const zod_1 = require("zod");
@@ -38,6 +38,13 @@ exports.CreateUserDataSchema = zod_1.z.object({
     //   .refine((value) => isUUID(value), {
     //     message: 'userId has to be a valid UUID',
     //   }),
+});
+exports.LoginUserDataSchema = zod_1.z.object({
+    email: zod_1.z
+        .string()
+        .min(3)
+        .regex(emailRegex, { message: 'Invlaid email entered' }),
+    password: zod_1.z.string().min(7, { message: 'field cannot be empty' }),
 });
 exports.UpdateAwardDataSchema = zod_1.z.object({
     title: zod_1.z.string(),

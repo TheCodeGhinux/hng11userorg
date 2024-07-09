@@ -44,6 +44,14 @@ export const CreateUserDataSchema = z.object({
   //   }),
 })
 
+export const LoginUserDataSchema = z.object({
+  email: z
+    .string()
+    .min(3)
+    .regex(emailRegex, { message: 'Invlaid email entered' }),
+  password: z.string().min(7, { message: 'field cannot be empty' }),
+})
+
 export const UpdateAwardDataSchema = z.object({
   title: z.string(),
   year: z.string(),

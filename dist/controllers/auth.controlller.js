@@ -16,6 +16,13 @@ const loginUser = async (req, res, next) => {
     try {
         const userRepository = app_data_source_1.AppDataSource.getRepository(enitity_1.User);
         const { email, password } = req.body;
+        try {
+            user_zod_1.LoginUserDataSchema.parse(req.body);
+        }
+        catch (error) {
+            const validationError = (0, zod_validation_error_1.fromError)(error).toString();
+            throw new middlewares_1.UnprocessableEntityError(validationError);
+        }
         const user = await userRepository.findOneBy({ email: email });
         if (!user) {
             throw new middlewares_1.BadRequestError('No user found with the email');

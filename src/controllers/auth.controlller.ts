@@ -4,7 +4,10 @@ import { ResponseHandler } from '../utils'
 import { generateToken } from '../utils/jwtUtils'
 import { AppDataSource } from '../app-data-source'
 import { Organisation, User } from '../enitity'
-import { CreateUserDataSchema } from '../middlewares/validations/user.zod'
+import {
+  CreateUserDataSchema,
+  LoginUserDataSchema,
+} from '../middlewares/validations/user.zod'
 import { fromError } from 'zod-validation-error'
 import { BadRequestError, UnprocessableEntityError } from '../middlewares'
 
@@ -16,6 +19,13 @@ export const loginUser = async (
   try {
     const userRepository = AppDataSource.getRepository(User)
     const { email, password } = req.body
+
+    try {
+      LoginUserDataSchema.parse(req.body)
+    } catch (error) {
+      const validationError = fromError(error).toString()
+      throw new UnprocessableEntityError(validationError)
+    }
 
     const user = await userRepository.findOneBy({ email: email })
 
