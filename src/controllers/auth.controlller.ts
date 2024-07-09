@@ -124,6 +124,7 @@ export const createUser = async (
     })
 
     const userResponse = {
+      userId: newUser.userId,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email: newUser.email,

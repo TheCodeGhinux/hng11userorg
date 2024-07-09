@@ -97,6 +97,7 @@ const createUser = async (req, res, next) => {
             secure: process.env.NODE_ENV === 'production',
         });
         const userResponse = {
+            userId: newUser.userId,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
